@@ -1,0 +1,20 @@
+{
+   "name": "passeinfo-api",
+    "version": "1.0.0",
+    "description": "SDK Node.js pour l'API PASSEINFO",
+    "main": "passeinfo_api.js",
+    "dependencies": {
+        "axios": "^0.26.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nekomat/passinfo_sdk"
+    },
+    "author": "PasseInfo Team",
+    "license": "MIT",
+    "readme": "README.md",
+    "files": [
+        "passeinfo_api.js",
+        "README.md"
+    ]
+}
