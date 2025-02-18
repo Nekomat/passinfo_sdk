@@ -1,5 +1,5 @@
 
-# ![PASSEINFO](https://api.passinfo.net/content/logo.png)
+# ![PASSEINFO](https://api.passeinfo.com/v1/content/logo.png)
 
 # PasseInfo API - SDK Node.js
 
@@ -10,10 +10,10 @@ Il facilite l'envoi de messages, la gestion des contacts, des groupes et bien pl
 ## 🚀 Installation
 
 ```bash
-npm install passeinfo-api
+npm install passeinfo-api 
 ```
 
-## 📖 Utilisation
+## 📖 Utilisation 
 
 ### 1️⃣ Importation et Initialisation
 ```javascript
@@ -58,35 +58,33 @@ async function sendSingleMessage(){
 sendSingleMessage()
 ```
 
-### 4️⃣ Récupération de la Liste des Contacts
+### 4️⃣ Voir le statut d'un message
 ```javascript
-async function getContacts() {
+async function getStatus() {
     try {
-        const contacts = await api.contact_all_my_contacts();
-        console.log("Contacts :", contacts);
+        const response = await api.get_single_status(messageId);
+        console.log("statut :", response);
     } catch (error) {
         console.error("Erreur API :", error);
     }
 }
 
-getContacts();
+getStatus();
 ```
 
-### 5️⃣ Création d'un Groupe de Contacts
+### 5️⃣ Voir le statut de plusieurs messages
 ```javascript
-async function createGroup() {
+async function getBulkStatus(bulk_id) {
     try {
-        const response = await api.groupe_create({
-            name: "Clients VIP"
-        });
-        console.log("Groupe créé :", response);
-    } catch (error) {
-        console.error("Erreur API :", error);
+        const response = await api.get_bulk_status(bulk_id);
+        console.log("statut :", response);
+    } catch (error) {  
+        console.error("Erreur API :", error); 
     }
 }
 
-createGroup();
-```
+getBulkStatus();
+``` 
 
 ###  Récupération du Solde de l'Utilisateur
 ```javascript
@@ -102,17 +100,28 @@ async function getBalance() {
 getBalance();
 ```
 
+### Renouvelle la clé API de l'utilisateur
+```javascript
+async function renewApi(){
+    try {
+        const new_api_key = await api.user_renew_api_key()
+        console.log('new API Key' , new_api_key) 
+    } catch (error){
+     console.error("Erreur API :", error);
+    }
+   
+}
+renewApi()
+```
+
 ## 📜 Méthodes Disponibles
 
 | 📌 Méthode | 🛠️ Description |
 |-----------|--------------|
 | `send_bulk_contacts_messages(data)` | Envoie un message en masse |
-| `get_all_my_contacts()` | Récupère tous les contacts |
-| `add_contact(data)` | Ajoute un nouveau contact |
 | `single_message(data)` | Envoie un message à un seul destinataire |
-| `get_all_my_groupes()` | Récupère la liste des groupes |
-| `groupe_create(data)` | Crée un groupe de contacts |
-| `groupe_add_contacts(data)` | Ajoute des contacts à un groupe |
+| `get_single_status()` | Prendre le statut d'un message |
+| `get_bulk_status()` | Prendre le statut en groupe |
 | `user_get_solde()` | Récupère le solde SMS de l'utilisateur |
 | `user_renew_api_key(data)` | Renouvelle la clé API de l'utilisateur |
 
@@ -120,4 +129,4 @@ getBalance();
 Ce projet est sous licence **MIT**.
 
 ---
-🚀 **Développé par l'équipe PASSEINFO** | [Site Web](https://passinfo.net)
+🚀 **Développé par l'équipe PASSEINFO** | [Site Web](https://passeinfo.com) 

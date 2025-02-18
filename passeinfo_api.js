@@ -5,7 +5,7 @@ class PasseInfoAPI {
     constructor(apiKey, clientId) {
         this.apiKey = apiKey;
         this.clientId = clientId;
-        this.baseUrl = "https://api.passinfo.net/v1";
+        this.baseUrl = "https://api.passeinfo.com/v1";
         this.client = axios.create({
             baseURL: this.baseUrl,
             headers: {
@@ -14,10 +14,10 @@ class PasseInfoAPI {
         });
     }
 
-    setAuthHeaders() {
+    #setAuthHeaders() {
         return {
-            'api_key': this.apiKey,
-            'client_id': this.clientId,
+            'api-key': this.apiKey,
+            'client-id': this.clientId,
         };
     }
 
@@ -35,7 +35,7 @@ class PasseInfoAPI {
     async send_bulk_contacts_messages(data) {
         try {
             const response = await this.client.post(`/message/send_bulk_contacts_messages`, data, {
-                headers: this.setAuthHeaders(),
+                headers: this.#setAuthHeaders(),
             });
             return response.data;
         } catch (error) {
@@ -49,16 +49,16 @@ class PasseInfoAPI {
      * @returns {Promise<Object[]>} - Liste des contacts enregistrés.
      * @throws {Error} - Retourne une erreur si la récupération échoue.
      */
-    async get_all_my_contacts() {
-        try {
-            const response = await this.client.get(`/contact/all_my_contacts`, {
-                headers: this.setAuthHeaders(),
-            });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    }
+    // async get_all_my_contacts() {
+    //     try {
+    //         const response = await this.client.get(`/contact/all_my_contacts`, {
+    //             headers: this.setAuthHeaders(),
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     /**
      * Ajoute un nouveau contact.
@@ -71,16 +71,16 @@ class PasseInfoAPI {
      * @returns {Promise<Object>} - Réponse de l'API indiquant si l'ajout a réussi.
      * @throws {Error} - Retourne une erreur si l'ajout échoue.
      */
-    async add_contact(data) {
-        try {
-            const response = await this.client.post(`/contact/add_contact`, data, {
-                headers: this.setAuthHeaders(),
-            });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    }
+    // async add_contact(data) {
+    //     try {
+    //         const response = await this.client.post(`/contact/add_contact`, data, {
+    //             headers: this.setAuthHeaders(),
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     /**
      * Envoie un message unique à un destinataire.
@@ -96,7 +96,7 @@ class PasseInfoAPI {
     async single_message(data) {
         try {
             const response = await this.client.post(`/message/single_message`, data, {
-                headers: this.setAuthHeaders(),
+                headers: this.#setAuthHeaders(),
             });
             return response.data;
         } catch (error) {
@@ -110,16 +110,16 @@ class PasseInfoAPI {
      * @returns {Promise<Object[]>} - Liste des groupes enregistrés.
      * @throws {Error} - Retourne une erreur si la récupération échoue.
      */
-    async get_all_my_groupes() {
-        try {
-            const response = await this.client.get(`/groupe/get_all_my_groupes`, {
-                headers: this.setAuthHeaders(),
-            });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    }
+    // async get_all_my_groupes() {
+    //     try {
+    //         const response = await this.client.get(`/groupe/get_all_my_groupes`, {
+    //             headers: this.setAuthHeaders(),
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     /**
      * Crée un nouveau groupe de contacts.
@@ -130,16 +130,16 @@ class PasseInfoAPI {
      * @returns {Promise<Object>} - Réponse de l'API avec les détails du groupe créé.
      * @throws {Error} - Retourne une erreur si la création échoue.
      */
-    async groupe_create(data) {
-        try {
-            const response = await this.client.post(`/groupe/create`, data, {
-                headers: this.setAuthHeaders(),
-            });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    }
+    // async groupe_create(data) {
+    //     try {
+    //         const response = await this.client.post(`/groupe/create`, data, {
+    //             headers: this.setAuthHeaders(),
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     /**
      * Récupère le solde SMS de l'utilisateur.
@@ -150,7 +150,7 @@ class PasseInfoAPI {
     async user_get_solde() {
         try {
             const response = await this.client.get(`/user/get_solde`, {
-                headers: this.setAuthHeaders(),
+                headers: this.#setAuthHeaders(),
             });
             return response.data;
         } catch (error) {
@@ -167,13 +167,48 @@ class PasseInfoAPI {
     async user_renew_api_key() {
         try {
             const response = await this.client.post(`/user/renew_api_key`, {}, {
-                headers: this.setAuthHeaders(),
+                headers: this.#setAuthHeaders(),
             });
             return response.data;
         } catch (error) {
-            throw error;
+            throw error; 
         }
     }
+    /**
+     * Prendre le statut d'un message unitaire.
+     * 
+     * @param {string} messageId - l'id du message pour voir le status
+     * @throws {Error} au cas ou les informations envoyés sont invalides
+     */
+    async get_single_status(messageId){
+        try {
+            const response = await this.client.get(`/message/get_single_status/${messageId}`,{
+                headers: this.#setAuthHeaders(),
+            })
+            return response.data
+        } catch (error) {
+            throw error;
+        }
+       
+    }
+   /**
+     * Prendre les statuts de plusieurs messages.
+     * 
+     * @param {string} bulk_id - l'id  pour voir les statuts
+     * @throws {Error} au cas ou les informations envoyés sont invalides
+     */
+   async get_bulk_status(bulk_id){
+    try {
+        const response = await this.client.get(`/message/get_bulk_status/${bulk_id}`,{
+            headers: this.#setAuthHeaders(),
+        })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+   }
+
+
 }
 
 module.exports = PasseInfoAPI;
